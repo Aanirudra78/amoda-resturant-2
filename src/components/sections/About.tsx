@@ -35,7 +35,7 @@ export function About() {
           {/* Image */}
           <div ref={imageRef} className={`relative h-[500px] rounded-card overflow-hidden shadow-card border border-stone-gray/10 scroll-reveal-left ${imageVisible ? 'revealed' : ''}`}>
             <Image
-              src="/images/about-us-temp.jpg"
+              src="/images/about.jpg"
               alt="Heritage dining at Amodad Village"
               fill
               sizes="(max-width: 1024px) 100vw, 50vw"
