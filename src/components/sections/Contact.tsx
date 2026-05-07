@@ -3,9 +3,13 @@
 import { useState } from 'react';
 import { Button } from '@/components/ui/Button';
 import { ReservationModal } from '@/components/ui/ReservationModal';
+import { useScrollReveal } from '@/hooks/useScrollAnimations';
 
 export function Contact() {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [headerRef, headerVisible] = useScrollReveal<HTMLDivElement>();
+  const [mapRef, mapVisible] = useScrollReveal<HTMLDivElement>();
+  const [infoRef, infoVisible] = useScrollReveal<HTMLDivElement>();
 
   return (
     <>
@@ -15,7 +19,7 @@ export function Contact() {
       
       <div className="max-w-content mx-auto container-padding relative">
         {/* Section Header */}
-        <div className="text-center mb-14">
+        <div ref={headerRef} className={`text-center mb-14 scroll-reveal ${headerVisible ? 'revealed' : ''}`}>
           <p className="font-inter text-xs tracking-[0.3em] uppercase text-soft-gold mb-4">Find Us</p>
           <h2 className="font-cormorant text-section-mobile lg:text-section font-medium text-charcoal mb-6">
             Visit Us
@@ -32,7 +36,7 @@ export function Contact() {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
           {/* Map */}
-          <div className="relative h-[450px] rounded-card overflow-hidden shadow-card border border-stone-gray/10">
+          <div ref={mapRef} className={`relative h-[450px] rounded-card overflow-hidden shadow-card border border-stone-gray/10 scroll-reveal-left ${mapVisible ? 'revealed' : ''}`}>
             <iframe
               src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d234567.89!2d79.9!3d23.18!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3981b9a0e0000001%3A0x123456789abcdef!2sJabalpur%2C%20Madhya%20Pradesh!5e0!3m2!1sen!2sin!4v1234567890"
               width="100%"
@@ -46,7 +50,7 @@ export function Contact() {
           </div>
 
           {/* Contact Info */}
-          <div className="space-y-5">
+          <div ref={infoRef} className={`space-y-5 scroll-reveal-right ${infoVisible ? 'revealed' : ''}`}>
             {/* Address */}
             <div className="p-6 bg-cream rounded-card border border-stone-gray/10 card-hover">
               <div className="flex items-start gap-4">

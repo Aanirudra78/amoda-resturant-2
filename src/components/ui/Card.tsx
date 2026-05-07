@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { ReactNode, forwardRef } from 'react';
 
 interface CardProps {
   children: ReactNode;
@@ -7,18 +7,23 @@ interface CardProps {
   onClick?: () => void;
 }
 
-export function Card({ children, className = '', hover = true, onClick }: CardProps) {
-  return (
-    <div
-      onClick={onClick}
-      className={`
-        bg-warm-white rounded-card shadow-card p-10
-        border border-stone-gray/10
-        ${hover ? 'card-hover cursor-pointer' : ''}
-        ${className}
-      `}
-    >
-      {children}
-    </div>
-  );
-}
+export const Card = forwardRef<HTMLDivElement, CardProps>(
+  ({ children, className = '', hover = true, onClick }, ref) => {
+    return (
+      <div
+        ref={ref}
+        onClick={onClick}
+        className={`
+          bg-warm-white rounded-card shadow-card p-10
+          border border-stone-gray/10
+          ${hover ? 'card-hover cursor-pointer' : ''}
+          ${className}
+        `}
+      >
+        {children}
+      </div>
+    );
+  }
+);
+
+Card.displayName = 'Card';

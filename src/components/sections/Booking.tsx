@@ -4,9 +4,13 @@ import { useState } from 'react';
 import Image from 'next/image';
 import { Button } from '@/components/ui/Button';
 import { ReservationModal } from '@/components/ui/ReservationModal';
+import { useScrollReveal } from '@/hooks/useScrollAnimations';
 
 export function Booking() {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [headerRef, headerVisible] = useScrollReveal<HTMLDivElement>();
+  const [imageRef, imageVisible] = useScrollReveal<HTMLDivElement>();
+  const [contentRef, contentVisible] = useScrollReveal<HTMLDivElement>();
 
   return (
     <>
@@ -17,7 +21,7 @@ export function Booking() {
         <div className="max-w-content mx-auto container-padding relative">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             {/* Image */}
-            <div className="relative h-[450px] lg:h-[550px] rounded-card overflow-hidden group">
+            <div ref={imageRef} className={`relative h-[450px] lg:h-[550px] rounded-card overflow-hidden group scroll-reveal-left ${imageVisible ? 'revealed' : ''}`}>
               <Image
                 src="/images/booking-hut.webp"
                 alt="Inside a heritage hut at Amodad Village"
@@ -33,7 +37,7 @@ export function Booking() {
             </div>
 
             {/* Content */}
-            <div className="text-center lg:text-left">
+            <div ref={contentRef} className={`text-center lg:text-left scroll-reveal-right ${contentVisible ? 'revealed' : ''}`}>
               <p className="font-inter text-xs tracking-[0.3em] uppercase text-soft-gold mb-4">Reservations</p>
               <h2 className="font-cormorant text-section-mobile lg:text-section font-medium text-charcoal mb-6">
                 Reserve Your Table

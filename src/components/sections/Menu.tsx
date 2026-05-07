@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import { OrderModal } from '@/components/ui/OrderModal';
+import { useScrollReveal } from '@/hooks/useScrollAnimations';
 
 interface MenuItem {
   id: string;
@@ -57,6 +58,7 @@ export function Menu() {
   const [activeCategory, setActiveCategory] = useState('starters');
   const [cart, setCart] = useState<CartItem[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [headerRef, headerVisible] = useScrollReveal<HTMLDivElement>();
 
   const addToCart = (item: MenuItem) => {
     setCart((prev) => {
@@ -95,7 +97,7 @@ export function Menu() {
       
       <div className="max-w-content mx-auto container-padding relative">
         {/* Section Header */}
-        <div className="text-center mb-14">
+        <div ref={headerRef} className={`text-center mb-14 scroll-reveal ${headerVisible ? 'revealed' : ''}`}>
           <p className="font-inter text-xs tracking-[0.3em] uppercase text-soft-gold mb-4">Culinary Delights</p>
           <h2 className="font-cormorant text-section-mobile lg:text-section font-medium text-charcoal mb-6">
             Our Menu
@@ -106,7 +108,7 @@ export function Menu() {
             <div className="w-12 h-px bg-gradient-to-l from-transparent to-forest-green/40" />
           </div>
           <p className="font-inter text-base text-stone-gray max-w-2xl mx-auto leading-relaxed">
-            Authentic flavors crafted with heritage recipes and fresh ingredients.
+            Authentic recipes passed down through generations, prepared with love and the finest ingredients.
           </p>
         </div>
 

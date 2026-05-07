@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Image from 'next/image';
+import { useScrollReveal } from '@/hooks/useScrollAnimations';
 
 const galleryImages = [
   { id: '1', src: '/images/gallery/gallery-1.jpg', alt: 'Amodad Village gallery image 1' },
@@ -23,6 +24,7 @@ const galleryImages = [
 
 export function Gallery() {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [headerRef, headerVisible] = useScrollReveal<HTMLDivElement>();
 
   return (
     <section id="gallery" className="section-padding bg-cream relative overflow-hidden">
@@ -31,7 +33,7 @@ export function Gallery() {
       
       <div className="max-w-content mx-auto container-padding relative">
         {/* Section Header */}
-        <div className="text-center mb-14">
+        <div ref={headerRef} className={`text-center mb-14 scroll-reveal ${headerVisible ? 'revealed' : ''}`}>
           <p className="font-inter text-xs tracking-[0.3em] uppercase text-soft-gold mb-4">Visual Journey</p>
           <h2 className="font-cormorant text-section-mobile lg:text-section font-medium text-charcoal mb-6">
             Gallery
@@ -47,34 +49,9 @@ export function Gallery() {
         </div>
 
         {/* Gallery Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 stagger-children">
           {galleryImages.map((image, index) => (
-            <div
-              key={image.id}
-              className={`
-                relative overflow-hidden rounded-card cursor-pointer group
-                ${index % 5 === 0 ? 'md:col-span-2 md:row-span-2' : ''}
-              `}
-              style={{ aspectRatio: index % 5 === 0 ? '1/1' : '4/3' }}
-              onClick={() => setSelectedImage(image.src)}
-            >
-              <Image
-                src={image.src}
-                alt={image.alt}
-                fill
-                className="object-cover transition-transform duration-700 group-hover:scale-110"
-                sizes={index % 5 === 0 ? '(max-width: 768px) 100vw, 50vw' : '(max-width: 768px) 50vw, 25vw'}
-              />
-              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors duration-500" />
-              {/* Hover icon */}
-              <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                <div className="w-12 h-12 rounded-full bg-warm-white/20 backdrop-blur-sm flex items-center justify-center">
-                  <svg className="w-6 h-6 text-warm-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
-                  </svg>
-                </div>
-              </div>
-            </div>
+            <GalleryImage key={image.id} image={image} index={index} onClick={() => setSelectedImage(image.src)} />
           ))}
         </div>
       </div>
@@ -105,5 +82,39 @@ export function Gallery() {
         </div>
       )}
     </section>
+  );
+}
+
+function GalleryImage({ image, index, onClick }: { image: typeof galleryImages[0]; index: number; onClick: () => void }) {
+  const [ref, isVisible] = useScrollReveal<HTMLDivElement>();
+
+  return (
+    <div
+      ref={ref}
+      className={`
+        relative overflow-hidden rounded-card cursor-pointer group img-zoom scroll-reveal-scale
+        ${index % 5 === 0 ? 'md:col-span-2 md:row-span-2' : ''}
+        ${isVisible ? 'revealed' : ''}
+      `}
+      style={{ aspectRatio: index % 5 === 0 ? '1/1' : '4/3', transitionDelay: `${index * 50}ms` }}
+      onClick={onClick}
+    >
+      <Image
+        src={image.src}
+        alt={image.alt}
+        fill
+        className="object-cover"
+        sizes={index % 5 === 0 ? '(max-width: 768px) 100vw, 50vw' : '(max-width: 768px) 50vw, 25vw'}
+      />
+      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors duration-500" />
+      {/* Hover icon */}
+      <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+        <div className="w-12 h-12 rounded-full bg-warm-white/20 backdrop-blur-sm flex items-center justify-center">
+          <svg className="w-6 h-6 text-warm-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
+          </svg>
+        </div>
+      </div>
+    </div>
   );
 }

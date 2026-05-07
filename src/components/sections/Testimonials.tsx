@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useScrollReveal } from '@/hooks/useScrollAnimations';
 
 interface Testimonial {
   id: string;
@@ -58,6 +59,7 @@ const testimonials: Testimonial[] = [
 export function Testimonials() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
+  const [headerRef, headerVisible] = useScrollReveal<HTMLDivElement>();
 
   useEffect(() => {
     if (isPaused) return;
@@ -86,7 +88,7 @@ export function Testimonials() {
       
       <div className="max-w-content mx-auto container-padding relative">
         {/* Section Header */}
-        <div className="text-center mb-14">
+        <div ref={headerRef} className={`text-center mb-14 scroll-reveal ${headerVisible ? 'revealed' : ''}`}>
           <p className="font-inter text-xs tracking-[0.3em] uppercase text-soft-gold mb-4">Guest Stories</p>
           <h2 className="font-cormorant text-section-mobile lg:text-section font-medium text-charcoal mb-6">
             What Our Guests Say

@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/Button';
 import { ReservationModal } from '@/components/ui/ReservationModal';
 
 const navLinks = [
+  { label: 'About', href: '#about' },
   { label: 'Experience', href: '#experience' },
   { label: 'Menu', href: '#menu' },
   { label: 'Gallery', href: '#gallery' },
@@ -28,6 +29,10 @@ export function Navigation() {
   const handleBookTable = () => {
     setIsMenuOpen(false);
     setIsModalOpen(true);
+  };
+
+  const handleNavClick = () => {
+    setIsMenuOpen(false);
   };
 
   return (
@@ -60,7 +65,7 @@ export function Navigation() {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className={`font-inter text-sm transition-colors duration-300 ${
+                  className={`font-inter text-sm transition-colors duration-300 animated-underline ${
                     isScrolled 
                       ? 'text-charcoal hover:text-forest-green' 
                       : 'text-warm-white/90 hover:text-warm-white drop-shadow-sm'
@@ -69,7 +74,7 @@ export function Navigation() {
                   {link.label}
                 </Link>
               ))}
-              <Button onClick={handleBookTable} variant="primary" size="sm">
+              <Button onClick={handleBookTable} variant="primary" size="sm" className="glow">
                 Book Table
               </Button>
             </div>
@@ -109,8 +114,8 @@ export function Navigation() {
                   <Link
                     key={link.href}
                     href={link.href}
-                    onClick={() => setIsMenuOpen(false)}
-                    className={`font-inter text-sm transition-colors duration-300 py-2 ${
+                    onClick={handleNavClick}
+                    className={`font-inter text-sm transition-colors duration-300 py-2 animated-underline ${
                       isScrolled 
                         ? 'text-charcoal hover:text-forest-green' 
                         : 'text-warm-white hover:text-warm-white/80'
@@ -119,7 +124,7 @@ export function Navigation() {
                     {link.label}
                   </Link>
                 ))}
-                <Button onClick={handleBookTable} variant="primary" size="sm" className="mt-2">
+                <Button onClick={handleBookTable} variant="primary" size="sm" className="mt-2 glow">
                   Book Table
                 </Button>
               </div>
